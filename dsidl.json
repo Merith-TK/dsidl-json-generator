@@ -1,0 +1,1 @@
+{"dsidl":1,"script":{"dsidl-gen":"http://example.com/dsidl-gen","go.mod":"http://example.com/go.mod","main.go":"http://example.com/main.go","testdir":"http://example.com/testdir","testdir/.url":"http://example.com/testdir/.url","testdir/fun":"http://example.com/testdir/fun"}}
