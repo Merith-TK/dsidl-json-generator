@@ -10,10 +10,17 @@ import (
 	"strings"
 )
 
-type DSiDLData struct {
-	Dsidl  int               `json:"dsidl"`
-	Script map[string]string `json:"script"`
+type URL struct {
+	URL string `json:"url"`
 }
+type DSiDLData struct {
+	Dsidl  int            `json:"dsidl"`
+	Script map[string]URL `json:"script"`
+}
+
+var (
+	dsidl DSiDLData
+)
 
 func main() {
 	// create url flag
@@ -50,12 +57,6 @@ func main() {
 
 	}
 
-	// create a new dsidl struct
-	dsidl := DSiDLData{}
-	dsidl.Dsidl = 1
-	dsidl.Script = make(map[string]string)
-
-	// walk the directory and add all files to the dsidl.Script map
 	err := filepath.Walk(*dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -63,16 +64,15 @@ func main() {
 
 		path = strings.TrimPrefix(path, *dir)
 
-		if path == "" || strings.Contains(path, "dsidl.json") || info.Name() == ".url" {
-			return nil
-		}
-		// ignore .git and dsidl.json
-		if info.IsDir() || info.Name() == "dsidl.json" || info.Name() == ".git" {
+		// ignore some files
+		if info.IsDir() || info.Name() == "dsidl.json" || info.Name() == ".url" || path == "" {
 			return nil
 		}
 
-		// add file to dsidl.Script map
-		dsidl.Script[path] = *url + path
+		dsidl.Dsidl = 1
+		dsidl.Script = make(map[string]URL)
+		dsidl.Script[path] = URL{*url + path}
+
 		return nil
 	})
 
