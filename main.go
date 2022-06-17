@@ -67,8 +67,8 @@ func main() {
 			return nil
 		}
 		// ignore .git and dsidl.json
-		if info.IsDir() && info.Name() == "dsidl.json" || info.Name() == ".git" {
-			return filepath.SkipDir
+		if info.IsDir() || info.Name() == "dsidl.json" || info.Name() == ".git" {
+			return nil
 		}
 
 		// add file to dsidl.Script map
